@@ -22,8 +22,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<EraSnapDbContext>(optionsBuilder =>
-    optionsBuilder.UseNpgsql(
-        $"User ID={Environment.GetEnvironmentVariable("DATABASE_USER")};Password={Environment.GetEnvironmentVariable("DATABASE_PASSWORD")};Host={Environment.GetEnvironmentVariable("DATABASE_HOST")};Port={Environment.GetEnvironmentVariable("DATABASE_PORT")};Database={Environment.GetEnvironmentVariable("DATABASE_NAME")};Pooling=true;"));
+    optionsBuilder.UseNpgsql(Environment.GetEnvironmentVariable("AZURE_POSTGRESQL_CONNECTIONSTRING") ??
+                             $"User ID={Environment.GetEnvironmentVariable("DATABASE_USER")};Password={Environment.GetEnvironmentVariable("DATABASE_PASSWORD")};Host={Environment.GetEnvironmentVariable("DATABASE_HOST")};Port={Environment.GetEnvironmentVariable("DATABASE_PORT")};Database={Environment.GetEnvironmentVariable("DATABASE_NAME")};Pooling=true;"));
 
 builder.Services.AddAzureClients(clientBuilder =>
 {
@@ -122,7 +122,7 @@ app.MapPost("/image", async ([FromBody] ImageRequest request, EraSnapDbContext d
 
 app.MapGet("/prompts", (EraSnapDbContext dbContext, BlobServiceClient blobServiceClient) =>
     {
-        return dbContext.Set<Prompt>().Where(x => !x.UserPrompt).AsEnumerable().Select(async x =>
+        return dbContext.Set<Prompt>().Where(x => !x.UserPrompt).AsAsyncEnumerable().SelectAwait(async x =>
         {
             var image = await GetImageFromBlob(blobServiceClient, x.ExampleImagePath!);
             return new PromptResponse(x.Id, x.Name, image);
