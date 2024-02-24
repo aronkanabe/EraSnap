@@ -1,0 +1,23 @@
+<div class="prompt-selector">
+
+    @if (!countDownInProgress) {
+        <h1>Create a portrait</h1>
+    }
+    @else {
+        <h1>{{timeLeft}}</h1>
+    }
+
+    @if (!webcamImage) {
+        <webcam mirrorImage="never" [trigger]="triggerObservable" (imageCapture)="handleImage($event)"></webcam>
+        <div class="button-group">
+            <p-button (click)="startTimer()">Take picture</p-button>
+        </div>
+    }
+    @else {
+        <img [src]="webcamImage.imageAsDataUrl"/>
+        <div class="button-group">
+            <p-button class="next-button">Next</p-button>
+            <p-button (click)="retakeImage()">Retake picture</p-button>
+        </div>
+    }
+</div>

@@ -1,1 +1,13 @@
-<p>artgen-page works!</p>
+
+
+<p-steps [model]="items" [readonly]="false" [activeIndex]="activeIndex" (activeIndexChange)="onActiveIndexChange($event)"></p-steps>
+
+<div class="content">
+    @if (activeIndex === 0) {
+        <esp-prompt-selector></esp-prompt-selector>
+    }
+
+    @if (activeIndex === 1) {
+        <esp-portrait-maker></esp-portrait-maker>
+    }
+</div>

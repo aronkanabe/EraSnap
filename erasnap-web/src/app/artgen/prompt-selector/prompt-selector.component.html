@@ -1,0 +1,9 @@
+<div class="prompt-selector">
+    <h1>Select prompt</h1>
+
+    <p-carousel [value]="prompts" [numVisible]="1" [numScroll]="1" [showIndicators]="false" orientation="vertical" verticalViewPortHeight="360px">
+        <ng-template let-prompt pTemplate="prompt">
+            <img style="height: 360px;" src="{{'data:image/jpg;base64,' + prompt.image}}" />
+        </ng-template>
+    </p-carousel>
+</div>
