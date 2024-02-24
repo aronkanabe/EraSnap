@@ -32,7 +32,7 @@ builder.Services.AddAzureClients(clientBuilder =>
 
 var app = builder.Build();
 
-app.Services.GetService<EraSnapDbContext>()?.Database.EnsureCreated();
+app.Services.GetService<EraSnapDbContext>()?.Database.Migrate();
 // Configure the HTTP request pipeline.
 
 app.UseSwagger();
@@ -101,7 +101,7 @@ app.MapPost("/image", async ([FromBody] ImageRequest request, EraSnapDbContext d
         if (request.CustomPrompt is not null)
         {
             promptId = Guid.NewGuid();
-            prompt = new Prompt(promptId, request.CustomPrompt, true);
+            prompt = new Prompt(promptId, request.CustomPrompt, "User Prompt", null,userPrompt: true);
         }
 
         dbContext.Set<Prompt>().Add(prompt!);
@@ -111,7 +111,7 @@ app.MapPost("/image", async ([FromBody] ImageRequest request, EraSnapDbContext d
         var imageData = GenerateImage(prompt!.Text, request.Image);
         var path = await UploadToBlob(blobServiceClient, imageId, imageData);
 
-        var image = new Image(Guid.NewGuid(), prompt.Id, path);
+        var image = new Image(imageId, prompt.Id, path);
         dbContext.Add(image);
 
         await dbContext.SaveChangesAsync();
@@ -119,9 +119,13 @@ app.MapPost("/image", async ([FromBody] ImageRequest request, EraSnapDbContext d
     }).Produces<ImageResponse>()
     .WithOpenApi();
 
-app.MapGet("/prompts", (EraSnapDbContext dbContext) =>
-{
-    return dbContext.Set<Prompt>().AsAsyncEnumerable();
+app.MapGet("/prompts", (EraSnapDbContext dbContext, BlobServiceClient blobServiceClient) =>
+    {
+        return dbContext.Set<Prompt>().Where(x => !x.UserPrompt).AsEnumerable().Select(async x =>
+        {
+            var image = await GetImageFromBlob(blobServiceClient, x.ExampleImagePath!);
+            return new PromptResponse(x.Id, x.Name, image);
+        });
 }).Produces<IEnumerable<PromptResponse>>()
 .CacheOutput(cachePolicyBuilder => cachePolicyBuilder.Cache().Expire(TimeSpan.FromSeconds(60)));
 
