@@ -16,7 +16,7 @@
     @else {
         <img [src]="webcamImage.imageAsDataUrl"/>
         <div class="button-group">
-            <p-button class="next-button">Next</p-button>
+            <p-button class="next-button" (onClick)="acceptImage()">Next</p-button>
             <p-button (click)="retakeImage()">Retake picture</p-button>
         </div>
     }

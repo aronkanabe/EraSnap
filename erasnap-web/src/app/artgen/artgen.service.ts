@@ -1,15 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Prompt } from './artgen.model';
+import { GeneratedImage, Prompt } from './artgen.model';
+import { WebcamImage } from 'ngx-webcam';
 
 @Injectable({ providedIn: 'root' })
 export class ArtgenService {
 
   constructor(protected http: HttpClient) {}
 
-  query(): Observable<HttpResponse<Prompt[]>> {
+  queryPrompts(): Observable<HttpResponse<Prompt[]>> {
     return this.http.get<Prompt[]>('https://erasnap-container-app.yellowsmoke-b696d1e5.northeurope.azurecontainerapps.io/prompts', {observe: 'response' });
+  }
+
+  findGeneratedImage(imageId: string): Observable<HttpResponse<GeneratedImage>> {
+    return this.http.get<GeneratedImage>(`https://erasnap-container-app.yellowsmoke-b696d1e5.northeurope.azurecontainerapps.io/images/${imageId}`, {observe: 'response' });
+  }
+
+  generateImage(prompt: Prompt, portrait: WebcamImage): Observable<HttpResponse<GeneratedImage>> {
+    return this.http.post<GeneratedImage>('', {image: portrait.imageAsBase64, id: prompt.id}, { observe: 'response' });
   }
 
 }

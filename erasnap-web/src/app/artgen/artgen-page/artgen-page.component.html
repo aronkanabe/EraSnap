@@ -1,13 +1,21 @@
 
 
-<p-steps [model]="items" [readonly]="false" [activeIndex]="activeIndex" (activeIndexChange)="onActiveIndexChange($event)"></p-steps>
+<p-steps [model]="items" [readonly]="false" [activeIndex]="activeIndex" (activeIndexChange)="onActiveIndexChange($event)" [readonly]="true"></p-steps>
 
 <div class="content">
     @if (activeIndex === 0) {
-        <esp-prompt-selector></esp-prompt-selector>
+        <esp-prompt-selector (promptEmitter)="setPrompt($event)"></esp-prompt-selector>
     }
 
     @if (activeIndex === 1) {
-        <esp-portrait-maker></esp-portrait-maker>
+        <esp-portrait-maker (imageEmitter)="setPortrait($event)"></esp-portrait-maker>
+    }
+
+    @if (activeIndex === 2) {
+        <esp-image-generator [prompt]="selectedPrompt" [portrait]="portrait" (generateImageEmitter)="setGeneratedImage($event)"></esp-image-generator>
+    }
+
+    @if (activeIndex === 3) {
+        <esp-qrcode-generator [imageId]="'3fa85f64-5717-4562-b3fc-2c963f66afa6'"></esp-qrcode-generator>
     }
 </div>

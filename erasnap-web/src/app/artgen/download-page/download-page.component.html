@@ -1,0 +1,7 @@
+<div class="download-page">
+    <h1>Download page</h1>
+    @if (image) {
+        <img src="{{'data:image/jpg;base64,' + image.image}}" />
+        <p-button (onClick)="saveImage()">Download</p-button>
+    }
+</div>

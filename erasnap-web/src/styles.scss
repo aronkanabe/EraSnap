@@ -1,3 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
+
+
+.p-steps .p-steps-item .p-menuitem-link .p-steps-number {
+    width: 40px;
+    height: 40px;
+    line-height: 40px; 
+    font-size: 20px;
+}
+
+.p-steps .p-steps-item {
+    height: 80px; 
+}
+.p-steps.p-component {
+    ul {
+        padding-top: 36px;
+    }
+}

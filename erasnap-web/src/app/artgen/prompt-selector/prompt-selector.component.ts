@@ -1,38 +1,41 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ArtgenService } from '../artgen.service';
 import { Prompt } from '../artgen.model';
-import { ListboxModule } from 'primeng/listbox';
-import {InputTextareaModule} from 'primeng/inputtextarea';
-import { CardModule } from 'primeng/card';
+import { GalleryImageDef, GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
 import { ButtonModule } from 'primeng/button';
-import { DomSanitizer } from '@angular/platform-browser';
-import { WebcamModule } from 'ngx-webcam';
-import { CarouselModule } from 'primeng/carousel';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'esp-prompt-selector',
   standalone: true,
   imports: [
-    ListboxModule,
-    CardModule,
-    InputTextareaModule,
-    WebcamModule,
+    GalleryModule,
     ButtonModule,
-    CarouselModule],
+    RadioButtonModule,
+    FormsModule
+  ],
   templateUrl: './prompt-selector.component.html',
   styleUrl: './prompt-selector.component.scss'
 })
 export class PromptSelectorComponent implements OnInit{
+  @Output() promptEmitter = new EventEmitter<Prompt>();
   prompts: Prompt[] = [];
-  selectedPrompt: Prompt | undefined;
-  // [...res.body, {'name': 'Custom'}]
- 
-  constructor(protected artgenService: ArtgenService,
-    private sanitizer: DomSanitizer) {}
+  selectedPrompt: Prompt | null = null;
+  images: GalleryItem[] = [];
+  gender: string = "male";
 
+  constructor(protected artgenService: ArtgenService) {}
+  
   ngOnInit(): void {
-    this.artgenService.query().subscribe((res) => {
-      this.prompts = res.body ?? []
+    this.artgenService.queryPrompts().subscribe((res) => {
+      this.prompts = res.body ?? [];
+      this.images = this.prompts.map((prompt) => new ImageItem({ src: `data:image/jpg;base64,${prompt.image}`, thumb: `data:image/jpg;base64,${prompt.image}` }))
     })
   }
+
+  public selectPrompt() {
+    this.promptEmitter.emit(this.prompts[0]);
+  }
+  
 }

@@ -1,9 +1,16 @@
 <div class="prompt-selector">
-    <h1>Select prompt</h1>
-
-    <p-carousel [value]="prompts" [numVisible]="1" [numScroll]="1" [showIndicators]="false" orientation="vertical" verticalViewPortHeight="360px">
-        <ng-template let-prompt pTemplate="prompt">
-            <img style="height: 360px;" src="{{'data:image/jpg;base64,' + prompt.image}}" />
-        </ng-template>
-    </p-carousel>
+    <h1>Select a prompt</h1>
+    <div class="gender-selector">
+        <div>
+            <p-radioButton name="gender" value="male" [(ngModel)]="gender"  inputId="male"></p-radioButton>
+            <label for="male" class="ml-2">Male</label>
+        </div>
+        
+        <div>
+            <p-radioButton name="gender" value="female" [(ngModel)]="gender" inputId="female"></p-radioButton>
+            <label for="female" class="ml-2">Female</label>
+        </div>
+    </div>
+    <gallery [items]="images" [autoHeight]="true" class="gallery"></gallery>
+    <p-button class="accept-button" (onClick)="selectPrompt()">Kiválasztás</p-button>
 </div>

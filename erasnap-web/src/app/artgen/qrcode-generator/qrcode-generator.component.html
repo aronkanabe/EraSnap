@@ -1,0 +1,6 @@
+<div class="qrcode-generator">
+    <h1>Scan the QR code</h1>
+    @if (downloadAddress) {
+        <qrcode [qrdata]="downloadAddress" [width]="512" [errorCorrectionLevel]="'M'"></qrcode>
+    }
+</div>

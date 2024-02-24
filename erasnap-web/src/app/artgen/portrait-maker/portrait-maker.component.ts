@@ -3,6 +3,7 @@ import { ButtonModule } from 'primeng/button';
 import { Observable, Subject } from 'rxjs';
 import { WebcamImage, WebcamModule } from 'ngx-webcam';
 import { Howl } from 'howler';
+import { GeneratedImage } from '../artgen.model';
 
 @Component({
   selector: 'esp-portrait-maker',

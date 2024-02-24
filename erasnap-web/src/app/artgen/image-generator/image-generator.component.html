@@ -1,0 +1,9 @@
+<div class="image-generator">
+    <h1>Image generator</h1>
+    @if(generatedImage) {
+        <img src="{{'data:image/jpg;base64,' + generatedImage.image}}" />
+    }
+    @if(loading) {
+        <p-progressSpinner class="loading-indicator" ariaLabel="loading"></p-progressSpinner>
+    }
+</div>
