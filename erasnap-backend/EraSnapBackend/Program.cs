@@ -1,12 +1,14 @@
+using System.Text.Json;
 using System.Text;
 using Azure.Identity;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using EraSnap.Data;
 using EraSnap.Data.Entities;
+using EraSnapBackend.Dtos;
 using EraSnapBackend.Models.Requests;
 using EraSnapBackend.Models.Responses;
-using Microsoft.AspNetCore.Http.HttpResults;
+using EraSnapBackend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +36,6 @@ var app = builder.Build();
 
 app.Services.GetService<EraSnapDbContext>()?.Database.Migrate();
 // Configure the HTTP request pipeline.
-
 app.UseSwagger();
 app.UseSwaggerUI();
 
@@ -140,5 +141,28 @@ app.MapGet("/images/{id:guid}", async ([FromRoute] Guid id, EraSnapDbContext dbC
         return Results.Ok(new ImageResponse(image.Id, imageData));
     }).Produces<ImageResponse>()
     .WithOpenApi();
+
+app.MapPost("/image-processing", async ([FromBody] ImageProcessingRequestDto dto,
+    IImageProcessingService imageProcessingService) =>
+{
+    var res = await imageProcessingService.GenerateImage(dto.Prompt);
+    return Results.Ok(res);
+});
+
+app.MapPost("/image-generation", async ([FromBody] ImageProcessingRequestDto dto,
+    IImageProcessingService imageProcessingService) =>
+{
+    var res = (await imageProcessingService.GenerateImage(dto.Prompt)).FirstOrDefault();
+    return res is null ? Results.Ok() : Results.File(Convert.FromBase64String(res.ImageInBase64),
+        fileDownloadName: "result.png");
+});
+
+app.MapGet("faceswap-test", async (IImageProcessingService imageProcessingService) =>
+{
+    var image = await imageProcessingService.SwapFace(
+        "https://i.ibb.co/7bdcL20/img-Jwf-Xdq-TDk1-GLYb-Hx0-JGPCq-X1.png",
+        "https://i.ibb.co/59Xk1N7/jennifer-aniston-murder-mystery-2-premiere-033023-1-ee3f91c303c544069a095b83a2e7a4a1.jpg");
+    return Results.Ok(image);
+});
 
 app.Run();
