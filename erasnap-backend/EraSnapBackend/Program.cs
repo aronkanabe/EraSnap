@@ -137,14 +137,14 @@ app.MapPost("/image", async ([FromBody] ImageRequest request, EraSnapDbContext d
     }).Produces<ImageResponse>()
     .WithOpenApi();
 
-app.MapGet("/prompts", (EraSnapDbContext dbContext, BlobServiceClient blobServiceClient) =>
+app.MapGet("/prompts", async (EraSnapDbContext dbContext, BlobServiceClient blobServiceClient) =>
     {
-        return dbContext.Set<Prompt>().Where(x => !x.UserPrompt).AsAsyncEnumerable().SelectAwait(async x =>
+        return await dbContext.Set<Prompt>().Where(x => !x.UserPrompt).AsAsyncEnumerable().SelectAwait(async x =>
         {
             var image = await GetImageFromBlob(blobServiceClient, x.ExampleImagePath!);
             return new PromptResponse(x.Id, x.Name, image);
-        });
-}).Produces<IEnumerable<PromptResponse>>()
+        }).ToListAsync();
+}).Produces<List<PromptResponse>>()
 .CacheOutput(cachePolicyBuilder => cachePolicyBuilder.Cache().Expire(TimeSpan.FromSeconds(60)));
 
 app.MapGet("/images/{id:guid}", async ([FromRoute] Guid id, EraSnapDbContext dbContext, BlobServiceClient blobServiceClient) =>
