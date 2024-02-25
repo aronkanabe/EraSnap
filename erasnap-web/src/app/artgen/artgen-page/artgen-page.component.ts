@@ -23,7 +23,6 @@ import { ImageGeneratorComponent } from '../image-generator/image-generator.comp
   styleUrl: './artgen-page.component.scss'
 })
 export class ArtgenPageComponent{
-  @ViewChild('promptSelector') promptSelector?: PromptSelectorComponent;
   items: MenuItem[] = [
     {label: 'Tematika kiválasztása'},
     {label: 'Portré készítése'},

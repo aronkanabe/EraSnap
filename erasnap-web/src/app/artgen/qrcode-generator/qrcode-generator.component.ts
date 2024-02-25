@@ -15,7 +15,6 @@ import { ButtonModule } from 'primeng/button';
 })
 export class QrcodeGeneratorComponent implements OnInit{
   @Input() imageId: string | null = null;
-  @Output() resetEmitter = new EventEmitter<void>();
   downloadAddress: string | null = null;
   
   ngOnInit(): void {
