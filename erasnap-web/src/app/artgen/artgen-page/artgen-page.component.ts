@@ -6,7 +6,7 @@ import { PortraitMakerComponent } from '../portrait-maker/portrait-maker.compone
 import { WebcamImage } from 'ngx-webcam';
 import { QrcodeGeneratorComponent } from '../qrcode-generator/qrcode-generator.component';
 import { PromptSelectorComponent } from '../prompt-selector/prompt-selector.component';
-import { GeneratedImage, Prompt } from '../artgen.model';
+import { GenderPrompt, GeneratedImage, Prompt } from '../artgen.model';
 import { ImageGeneratorComponent } from '../image-generator/image-generator.component';
 
 @Component({
@@ -24,23 +24,23 @@ import { ImageGeneratorComponent } from '../image-generator/image-generator.comp
 })
 export class ArtgenPageComponent{
   items: MenuItem[] = [
-    {label: 'Select prompt'},
-    {label: 'Create picture'},
-    {label: 'Generate image'},
-    {label: 'Download'}
+    {label: 'Tematika kiválasztása'},
+    {label: 'Portré készítése'},
+    {label: 'Kép generálás'},
+    {label: 'Letöltés'}
   ];
   activeIndex: number = 0;
 
   portrait: WebcamImage | null = null;
-  selectedPrompt: Prompt | null = null;
+  selectedPrompt: GenderPrompt | null = null;
   generatedImage: GeneratedImage | null = null;
 
   public onActiveIndexChange(event: number) {
     this.activeIndex = event;
   }
 
-  public setPrompt(prompt: Prompt) {
-    this.selectedPrompt = prompt;
+  public setPrompt(genderPrompt: GenderPrompt) {
+    this.selectedPrompt = genderPrompt;
     ++this.activeIndex;
   }
 

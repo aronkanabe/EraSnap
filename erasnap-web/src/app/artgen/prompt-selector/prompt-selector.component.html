@@ -3,14 +3,22 @@
     <div class="gender-selector">
         <div>
             <p-radioButton name="gender" value="male" [(ngModel)]="gender"  inputId="male"></p-radioButton>
-            <label for="male" class="ml-2">Male</label>
+            <label for="male" class="ml-2">Férfi</label>
         </div>
         
         <div>
             <p-radioButton name="gender" value="female" [(ngModel)]="gender" inputId="female"></p-radioButton>
-            <label for="female" class="ml-2">Female</label>
+            <label for="female" class="ml-2">Nő</label>
         </div>
     </div>
-    <gallery [items]="images" [autoHeight]="true" class="gallery"></gallery>
+    <gallery [items]="images" [autoHeight]="true" class="gallery">
+        <ng-container *galleryImageDef="let item; let active = active">
+            @if(active) {
+                <div class="overlay">
+                {{ item?.alt }}
+                </div>
+            }
+          </ng-container>
+    </gallery>
     <p-button class="accept-button" (onClick)="selectPrompt()">Kiválasztás</p-button>
 </div>

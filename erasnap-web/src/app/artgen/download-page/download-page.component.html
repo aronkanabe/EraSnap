@@ -1,7 +1,7 @@
 <div class="download-page">
-    <h1>Download page</h1>
+    <h1>Töltse le a képet</h1>
     @if (image) {
-        <img src="{{'data:image/jpg;base64,' + image.image}}" />
-        <p-button (onClick)="saveImage()">Download</p-button>
+        <img src="{{'data:image/jpg;base64,' + image.image}}">
+        <p-button (onClick)="saveImage()" class="download-button">Letöltés</p-button>
     }
 </div>

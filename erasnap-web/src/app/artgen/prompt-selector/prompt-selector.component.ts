@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ArtgenService } from '../artgen.service';
-import { Prompt } from '../artgen.model';
+import { GenderPrompt, Prompt } from '../artgen.model';
 import { GalleryImageDef, GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
 import { ButtonModule } from 'primeng/button';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -19,7 +19,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './prompt-selector.component.scss'
 })
 export class PromptSelectorComponent implements OnInit{
-  @Output() promptEmitter = new EventEmitter<Prompt>();
+  @Output() promptEmitter = new EventEmitter<GenderPrompt>();
   prompts: Prompt[] = [];
   selectedPrompt: Prompt | null = null;
   images: GalleryItem[] = [];
@@ -30,12 +30,12 @@ export class PromptSelectorComponent implements OnInit{
   ngOnInit(): void {
     this.artgenService.queryPrompts().subscribe((res) => {
       this.prompts = res.body ?? [];
-      this.images = this.prompts.map((prompt) => new ImageItem({ src: `data:image/jpg;base64,${prompt.image}`, thumb: `data:image/jpg;base64,${prompt.image}` }))
+      this.images = this.prompts.map((prompt) => new ImageItem({ src: `data:image/jpg;base64,${prompt.image}`, thumb: `data:image/jpg;base64,${prompt.image}`, alt: prompt.name }))
     })
   }
 
   public selectPrompt() {
-    this.promptEmitter.emit(this.prompts[0]);
+    this.promptEmitter.emit({prompt: this.prompts[0], gender: this.gender});
   }
   
 }

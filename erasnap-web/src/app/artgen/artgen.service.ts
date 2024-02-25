@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GeneratedImage, Prompt } from './artgen.model';
+import { GenderPrompt, GeneratedImage, Prompt } from './artgen.model';
 import { WebcamImage } from 'ngx-webcam';
 
 @Injectable({ providedIn: 'root' })
@@ -17,8 +17,8 @@ export class ArtgenService {
     return this.http.get<GeneratedImage>(`https://erasnap-container-app.yellowsmoke-b696d1e5.northeurope.azurecontainerapps.io/images/${imageId}`, {observe: 'response' });
   }
 
-  generateImage(prompt: Prompt, portrait: WebcamImage): Observable<HttpResponse<GeneratedImage>> {
-    return this.http.post<GeneratedImage>('', {image: portrait.imageAsBase64, id: prompt.id}, { observe: 'response' });
+  generateImage(genderPrompt: GenderPrompt, portrait: WebcamImage): Observable<HttpResponse<GeneratedImage>> {
+    return this.http.post<GeneratedImage>('https://erasnap-container-app.yellowsmoke-b696d1e5.northeurope.azurecontainerapps.io/image', {image: portrait.imageAsBase64, promptId: genderPrompt.prompt?.id, gender: genderPrompt.gender}, { observe: 'response' });
   }
 
 }

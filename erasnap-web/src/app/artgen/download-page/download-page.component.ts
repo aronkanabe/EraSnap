@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ArtgenService } from '../artgen.service';
 import { GeneratedImage } from '../artgen.model';
 import { ActivatedRoute } from '@angular/router';
@@ -13,7 +13,7 @@ import { FileSaverModule, FileSaverService } from 'ngx-filesaver';
   styleUrl: './download-page.component.scss'
 })
 export class DonwloadPageComponent implements OnInit{
-  image: GeneratedImage | null = null; 
+  image: GeneratedImage | null = null;
  
   constructor(protected artgenService: ArtgenService,
     private route: ActivatedRoute,
@@ -23,9 +23,9 @@ export class DonwloadPageComponent implements OnInit{
     let imageId = this.route.snapshot.queryParamMap.get('imageId');
     console.log(imageId);
     if(imageId) {
-      this.artgenService.findGeneratedImage(imageId).subscribe((res) => {
-        this.image = res.body;
-      })
+      this.artgenService.findGeneratedImage(imageId).subscribe(async (res) => {
+      this.image = res.body;
+      });
     }
   }
 
@@ -37,7 +37,7 @@ export class DonwloadPageComponent implements OnInit{
         byteNumbers[i] = byteCharacters.charCodeAt(i);
       }
       const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], { type: 'image/png' }); // Change the type accordingly
+      const blob = new Blob([byteArray], { type: 'image/jpg' });
       this.fileSaverService.save(blob, this.image.id);
     }
   }

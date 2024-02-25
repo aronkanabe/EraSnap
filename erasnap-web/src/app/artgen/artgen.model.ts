@@ -8,3 +8,9 @@ export interface Prompt {
     name?: string;
     image?: string;
 }
+
+export interface GenderPrompt {
+    prompt?: Prompt
+    gender?: string
+}
+
