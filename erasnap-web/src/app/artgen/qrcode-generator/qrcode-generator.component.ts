@@ -16,7 +16,7 @@ export class QrcodeGeneratorComponent implements OnInit{
   downloadAddress: string | null = null;
   
   ngOnInit(): void {
-    this.downloadAddress =  `${window.location.host}/download/${this.imageId}`
+    this.downloadAddress =  `${window.location.host}/download?imageId=${this.imageId}`
     console.log(window.location.host);
   }
   

@@ -37,7 +37,7 @@ export class DonwloadPageComponent implements OnInit{
         byteNumbers[i] = byteCharacters.charCodeAt(i);
       }
       const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], { type: 'image/jpg' });
+      const blob = new Blob([byteArray], { type: 'image/png' });
       this.fileSaverService.save(blob, this.image.id);
     }
   }
