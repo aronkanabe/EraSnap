@@ -4,7 +4,7 @@
 
 <div class="content">
     @if (activeIndex === 0) {
-        <esp-prompt-selector (promptEmitter)="setPrompt($event)"></esp-prompt-selector>
+        <esp-prompt-selector #promptSelector (promptEmitter)="setPrompt($event)"></esp-prompt-selector>
     }
 
     @if (activeIndex === 1) {
@@ -16,6 +16,6 @@
     }
 
     @if (activeIndex === 3 && generatedImage && generatedImage.id) {
-        <esp-qrcode-generator [imageId]='generatedImage.id ? generatedImage.id : null'></esp-qrcode-generator>
+        <esp-qrcode-generator [imageId]='generatedImage.id ? generatedImage.id : null' ></esp-qrcode-generator>
     }
 </div>

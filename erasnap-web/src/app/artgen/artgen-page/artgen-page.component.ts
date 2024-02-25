@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { StepsModule } from 'primeng/steps';
 import { MenuItem } from 'primeng/api';
@@ -23,6 +23,7 @@ import { ImageGeneratorComponent } from '../image-generator/image-generator.comp
   styleUrl: './artgen-page.component.scss'
 })
 export class ArtgenPageComponent{
+  @ViewChild('promptSelector') promptSelector?: PromptSelectorComponent;
   items: MenuItem[] = [
     {label: 'Tematika kiválasztása'},
     {label: 'Portré készítése'},
@@ -41,6 +42,7 @@ export class ArtgenPageComponent{
 
   public setPrompt(genderPrompt: GenderPrompt) {
     this.selectedPrompt = genderPrompt;
+    console.log(genderPrompt.prompt?.name);
     ++this.activeIndex;
   }
 

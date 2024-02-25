@@ -11,7 +11,7 @@
             <label for="female" class="ml-2">Nő</label>
         </div>
     </div>
-    <gallery [items]="images" [autoHeight]="true" class="gallery">
+    <gallery [items]="images" [autoHeight]="true" class="gallery" (indexChange)="indexChange($event)">
         <ng-container *galleryImageDef="let item; let active = active">
             @if(active) {
                 <div class="overlay">
