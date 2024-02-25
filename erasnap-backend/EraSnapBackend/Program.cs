@@ -144,8 +144,7 @@ app.MapGet("/prompts", async (EraSnapDbContext dbContext, BlobServiceClient blob
             var image = await GetImageFromBlob(blobServiceClient, x.ExampleImagePath!);
             return new PromptResponse(x.Id, x.Name, image);
         }).ToListAsync();
-}).Produces<List<PromptResponse>>()
-.CacheOutput(cachePolicyBuilder => cachePolicyBuilder.Cache().Expire(TimeSpan.FromSeconds(60)));
+}).Produces<List<PromptResponse>>();
 
 app.MapGet("/images/{id:guid}", async ([FromRoute] Guid id, EraSnapDbContext dbContext, BlobServiceClient blobServiceClient) =>
     {
