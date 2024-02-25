@@ -1,16 +1,13 @@
-using System.Text.Json;
-using System.Text;
 using Azure.Identity;
 using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
 using EraSnap.Data;
 using EraSnap.Data.Entities;
 using EraSnapBackend.Dtos;
 using EraSnapBackend.Models.Requests;
 using EraSnapBackend.Models.Responses;
 using EraSnapBackend.Services;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 
@@ -109,26 +106,12 @@ app.MapPost("/image", async ([FromBody] ImageRequest request, EraSnapDbContext d
         if (request is {PromptId: null, CustomPrompt: null} or { PromptId: not null, CustomPrompt: not null })
             return Results.BadRequest("Either PromptId or CustomPrompt should be defined");
         
-        Guid promptId;
-        Prompt? prompt = null;
-        
-        if (request.PromptId.HasValue)
-        {
-            promptId = request.PromptId.Value;
-            prompt = await dbContext.Set<Prompt>().FindAsync(request.PromptId);
-        }
-        
-        if (request.CustomPrompt is not null)
-        {
-            promptId = Guid.NewGuid();
-            prompt = new Prompt(promptId, request.CustomPrompt, "User Prompt", null,userPrompt: true);
-        }
-
-        dbContext.Set<Prompt>().Add(prompt!);
+        var prompt = await dbContext.Set<Prompt>().FindAsync(request.PromptId);
+        var promptText = request.Gender is "male" ? prompt.ManText : prompt.FemaleText;
         
         // upload to blob
         var imageId = Guid.NewGuid();
-        var imageData = await GenerateImage(blobServiceClient, imageProcessingService, prompt!.Text, request.Image);
+        var imageData = await GenerateImage(blobServiceClient, imageProcessingService, promptText, request.Image);
         var path = await UploadToBlob(blobServiceClient, imageId, imageData);
 
         var image = new Image(imageId, prompt.Id, path);
