@@ -24,7 +24,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<EraSnapDbContext>(optionsBuilder =>
-    optionsBuilder.UseInMemoryDatabase(Environment.GetEnvironmentVariable("DATABASE_NAME") ?? string.Empty));
+    optionsBuilder.UseInMemoryDatabase("eraSnapDB"));
     // optionsBuilder.UseNpgsql(Environment.GetEnvironmentVariable("AZURE_POSTGRESQL_CONNECTIONSTRING") ??
     //                          "User ID=postgres;Password=node-project;Host=localhost;Port=5433;Database=erasnap;Pooling=true;"));
     // optionsBuilder.UseNpgsql(Environment.GetEnvironmentVariable("AZURE_POSTGRESQL_CONNECTIONSTRING") ??
