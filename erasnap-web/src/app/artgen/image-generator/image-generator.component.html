@@ -1,8 +1,8 @@
 <div class="image-generator">
-    <h1>Kép generálása</h1>
+    <h1>Image generation</h1>
     @if(generatedImage) {
         <img src="{{'data:image/jpg;base64,' + generatedImage.image}}" />
-        <p-button class="buy-button" (onClick)="buyImage()">Vásárlás</p-button>
+        <p-button class="buy-button" (onClick)="buyImage()">Checkout</p-button>
     }
     @if(loading) {
         <p-progressSpinner class="loading-indicator" ariaLabel="loading"></p-progressSpinner>

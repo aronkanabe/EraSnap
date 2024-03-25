@@ -1,7 +1,7 @@
 <div class="qrcode-generator">
-    <h1>Olvassa be a QR kódot</h1>
+    <h1>Scan the QR code</h1>
     @if (downloadAddress) {
         <qrcode [qrdata]="downloadAddress" [width]="512" [errorCorrectionLevel]="'M'"></qrcode>
-        <p-button (onClick)="reset()" class="reset-button">Újra kezdés</p-button>
+        <p-button (onClick)="reset()" class="reset-button">Try again</p-button>
     }
 </div>

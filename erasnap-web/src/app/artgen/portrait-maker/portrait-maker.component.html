@@ -1,7 +1,7 @@
 <div class="prompt-selector">
 
     @if (!countDownInProgress) {
-        <h1>Készítsen egy portrét</h1>
+        <h1>Take a picture</h1>
     }
     @else {
         <h1>{{timeLeft}}</h1>
@@ -10,14 +10,14 @@
     @if (!webcamImage) {
         <webcam mirrorImage="never" [trigger]="triggerObservable" (imageCapture)="handleImage($event)"></webcam>
         <div class="button-group">
-            <p-button (click)="startTimer()">Kép Készítse</p-button>
+            <p-button (click)="startTimer()">Take a picture</p-button>
         </div>
     }
     @else {
         <img [src]="webcamImage.imageAsDataUrl"/>
         <div class="button-group">
-            <p-button class="next-button" (onClick)="acceptImage()">Tovább</p-button>
-            <p-button (click)="retakeImage()">Újrakészítés</p-button>
+            <p-button class="next-button" (onClick)="acceptImage()">Next</p-button>
+            <p-button (click)="retakeImage()">Retry</p-button>
         </div>
     }
 </div>

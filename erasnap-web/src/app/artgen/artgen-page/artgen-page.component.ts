@@ -24,10 +24,10 @@ import { ImageGeneratorComponent } from '../image-generator/image-generator.comp
 })
 export class ArtgenPageComponent{
   items: MenuItem[] = [
-    {label: 'Tematika kiválasztása'},
-    {label: 'Portré készítése'},
-    {label: 'Kép generálás'},
-    {label: 'Letöltés'}
+    {label: 'Choosing the theme'},
+    {label: 'Taking the picture'},
+    {label: 'Image generation'},
+    {label: 'Download'}
   ];
   activeIndex: number = 0;
 

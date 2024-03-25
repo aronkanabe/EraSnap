@@ -1,14 +1,14 @@
 <div class="prompt-selector">
-    <h1>Válaszon ki egy tematikát</h1>
+    <h1>Choose a theme</h1>
     <div class="gender-selector">
         <div>
             <p-radioButton name="gender" value="male" [(ngModel)]="gender"  inputId="male"></p-radioButton>
-            <label for="male" class="ml-2">Férfi</label>
+            <label for="male" class="ml-2">Male</label>
         </div>
         
         <div>
             <p-radioButton name="gender" value="female" [(ngModel)]="gender" inputId="female"></p-radioButton>
-            <label for="female" class="ml-2">Nő</label>
+            <label for="female" class="ml-2">Female</label>
         </div>
     </div>
     <gallery [items]="images" [autoHeight]="true" class="gallery" (indexChange)="indexChange($event)">
@@ -20,5 +20,5 @@
             }
           </ng-container>
     </gallery>
-    <p-button class="accept-button" (onClick)="selectPrompt()">Kiválasztás</p-button>
+    <p-button class="accept-button" (onClick)="selectPrompt()">Next</p-button>
 </div>
